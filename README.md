@@ -1,70 +1,103 @@
-# Getting Started with Create React App
+# Todo List App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A personal todo list application built with React. The project is intended to let users create, view, edit, complete, and remove tasks.
 
-## Available Scripts
+> **Current status:** This repository is still in the initial development stage. The todo components are placeholders and have not yet been connected to the main application, so the browser currently displays an empty app page.
 
-In the project directory, you can run:
+## Technology used
 
-### `npm start`
+- React 18
+- Create React App / React Scripts
+- Font Awesome React icons
+- UUID for generating unique task identifiers
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## What to install on your local machine
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Before cloning the project, install:
 
-### `npm test`
+1. **Git** - required to clone the repository.
+2. **Node.js 18 or newer** - includes npm, which installs dependencies and runs the app. An active Node.js LTS release is recommended.
+3. **A modern web browser** - Chrome, Firefox, Edge, or Safari.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Optional but recommended:
 
-### `npm run build`
+- A code editor such as Visual Studio Code.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Confirm that Git, Node.js, and npm are available:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```bash
+git --version
+node --version
+npm --version
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Run the app after cloning
 
-### `npm run eject`
+1. Clone the repository:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+   ```bash
+   git clone <repository-url>
+   ```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+   Replace `<repository-url>` with the HTTPS or SSH URL for this repository.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+2. Enter the project directory:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+   ```bash
+   cd todo-list-app
+   ```
 
-## Learn More
+3. Install the exact dependency versions recorded in `package-lock.json`:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+   ```bash
+   npm ci
+   ```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+   If `npm ci` cannot be used because the lockfile has been changed or removed, run `npm install` instead.
 
-### Code Splitting
+4. Start the development server:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+   ```bash
+   npm start
+   ```
 
-### Analyzing the Bundle Size
+5. Open [http://localhost:3000](http://localhost:3000) in your browser. Create React App usually opens this address automatically.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+To stop the development server, press `Ctrl+C` in the terminal.
 
-### Making a Progressive Web App
+## Available commands
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Run these commands from the project directory:
 
-### Advanced Configuration
+| Command | Purpose |
+| --- | --- |
+| `npm start` | Starts the local development server with automatic reloads. |
+| `npm test` | Runs the test suite in interactive watch mode. |
+| `npm run build` | Creates an optimized production build in the `build` directory. |
+| `npm run eject` | Exposes Create React App configuration. This is irreversible and is normally unnecessary. |
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## Production build
 
-### Deployment
+Create a deployable build with:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+```bash
+npm run build
+```
 
-### `npm run build` fails to minify
+The generated static files will be placed in the `build` directory. They can be served by a static hosting provider or web server.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Project structure
+
+```text
+todo-list-app/
+|-- public/                  Static public assets and HTML template
+|-- src/
+|   |-- components/         Todo UI component placeholders
+|   |-- App.js              Root React component
+|   |-- App.css             Application styles
+|   `-- index.js            Application entry point
+|-- package.json            Dependencies and npm scripts
+`-- package-lock.json       Locked dependency versions
+```
+
+No database, backend server, environment variables, or external services are currently required to run the project locally.
