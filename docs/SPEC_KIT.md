@@ -22,6 +22,42 @@ node --version
 npm --version
 ```
 
+### PowerShell setup and troubleshooting
+
+If `uv` is not installed, install it from PowerShell with WinGet:
+
+```powershell
+winget install --id=astral-sh.uv -e --accept-package-agreements --accept-source-agreements
+```
+
+Restart PowerShell after installation so the updated `PATH` is loaded. If you
+cannot restart the current session, locate the executable and invoke it by its
+full path:
+
+```powershell
+Get-ChildItem "$env:LOCALAPPDATA\Microsoft\WinGet" -Recurse -Filter uv.exe
+```
+
+The current Specify CLI requires Python 3.11 or newer. The machine's existing
+Python 3.10 installation therefore cannot install current releases with
+`python -m pip install --user specify-cli`. Using `uv` avoids changing that
+Python installation because it provisions a compatible isolated runtime.
+
+If `specify` is not installed or is not yet available on `PATH`, initialize the
+project directly through `uv`:
+
+```powershell
+uv tool run --from git+https://github.com/github/spec-kit.git specify init --here --force --integration codex --integration-options="--skills" --script ps
+```
+
+In a PowerShell session whose `PATH` has not refreshed, replace `uv` in that
+command with the full path returned by `Get-ChildItem` and invoke it with the
+call operator (`&`), for example:
+
+```powershell
+& "C:\path\to\uv.exe" tool run --from git+https://github.com/github/spec-kit.git specify init --here --force --integration codex --integration-options="--skills" --script ps
+```
+
 ## Install the Specify CLI
 
 Find the newest version on the [official Spec Kit releases page](https://github.com/github/spec-kit/releases). Replace `vX.Y.Z` below with that release tag:
