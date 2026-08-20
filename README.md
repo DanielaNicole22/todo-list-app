@@ -93,9 +93,9 @@ todo-list-app/
 |-- public/                  Static public assets and HTML template
 |-- src/
 |   |-- components/         Todo UI component placeholders
-|   |-- App.js              Root React component
+|   |-- App.jsx             Root React component
 |   |-- App.css             Application styles
-|   `-- index.js            Application entry point
+|   `-- index.jsx           Application entry point
 |-- package.json            Dependencies and npm scripts
 `-- package-lock.json       Locked dependency versions
 ```

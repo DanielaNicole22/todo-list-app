@@ -4,7 +4,7 @@ This guide explains how to use the Spec Kit installation already present in this
 
 ## Current project state
 
-Spec Kit is configured for Codex with PowerShell scripts and skill-based commands. The React application is still an early scaffold: `App.js` renders an empty container and the files under `src/components/` are placeholders.
+Spec Kit is configured for Codex with PowerShell scripts and skill-based commands. The React application is still an early scaffold: `App.jsx` renders an empty container and the files under `src/components/` are placeholders.
 
 This makes the project a good candidate for incremental, specification-driven development. Build one coherent user-facing feature at a time instead of describing the entire future application in one large request.
 
@@ -116,7 +116,7 @@ The resulting `tasks.md` should be ordered so foundational work precedes depende
 2. Implement task state and actions in the wrapper component.
 3. Implement creation and validation in the form.
 4. Render individual tasks with completion, edit, and delete actions.
-5. Connect the components through `App.js`.
+5. Connect the components through `App.jsx`.
 6. Add accessible and responsive styling.
 7. Add behavior and persistence tests.
 8. Run the test and production-build checks.
