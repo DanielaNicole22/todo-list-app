@@ -8,6 +8,18 @@
 
 **Input**: User description: "Create the core task-management experience for the todo-list app. A user can add a task with non-empty text, view all tasks, mark a task complete or active, edit its text, and delete it. Tasks persist after a browser refresh. Empty or whitespace-only tasks are rejected with an accessible validation message. The interface works with a keyboard and adapts to mobile and desktop widths."
 
+## Clarifications
+
+### Session 2026-09-18
+
+- Q: What maximum length should be allowed for task text? -> A: 500 characters.
+- Q: If task persistence is unavailable or saving fails, how should the application behave? -> A:
+  Continue for the current session and show an accessible persistence warning.
+- Q: While editing a task, which keyboard shortcuts should save or cancel the edit? -> A: Enter
+  saves and Escape cancels; visible Save and Cancel controls remain available.
+- Q: Where should keyboard focus move after adding, saving, canceling, or deleting a task? -> A:
+  Move focus contextually to the nearest useful control.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Capture and Review Tasks (Priority: P1)
@@ -34,6 +46,13 @@ refresh the page, and confirm that the same task is still visible and active.
    required.
 5. **Given** a validation message is displayed, **When** the user supplies valid task text and submits
    it, **Then** the task is created and the obsolete validation message is cleared.
+6. **Given** the task entry exceeds 500 characters, **When** the user attempts to submit it, **Then**
+   no task is created and an accessible validation message explains the 500-character limit.
+7. **Given** persistence is unavailable or a save fails, **When** the user changes tasks, **Then** the
+   change remains usable for the current session and an accessible warning explains that it may not
+   survive a refresh.
+8. **Given** a task is successfully added, **When** the interface finishes updating, **Then** keyboard
+   focus returns to the new-task input.
 
 ---
 
@@ -76,10 +95,25 @@ then delete it and confirm that it does not return after a refresh.
 2. **Given** a task is being edited, **When** the user attempts to save empty or whitespace-only text,
    **Then** the original task remains unchanged and an accessible validation message explains that
    task text is required.
-3. **Given** a task exists, **When** the user deletes it, **Then** it is removed from the visible list
+3. **Given** a task is being edited, **When** the user attempts to save text exceeding 500 characters,
+   **Then** the original task remains unchanged and an accessible validation message explains the
+   500-character limit.
+4. **Given** a task exists, **When** the user deletes it, **Then** it is removed from the visible list
    and does not return after a page refresh.
-4. **Given** a task is being edited, **When** the user cancels editing, **Then** the original task text
+5. **Given** a task is being edited, **When** the user cancels editing, **Then** the original task text
    and completion state remain unchanged.
+6. **Given** a task is being edited with valid text, **When** the user presses Enter, **Then** the edit
+   is saved with the same result as activating the visible Save control.
+7. **Given** a task is being edited, **When** the user presses Escape, **Then** the edit is canceled
+   with the same result as activating the visible Cancel control.
+8. **Given** a task edit is saved or canceled, **When** the interface returns to display mode, **Then**
+   focus moves to the edited task's Edit control.
+9. **Given** a focused task is deleted, **When** another task follows it, **Then** focus moves to that
+   next task's first control.
+10. **Given** a focused task is deleted and no task follows it, **When** another task precedes it,
+    **Then** focus moves to that previous task's first control.
+11. **Given** the final task is deleted, **When** the list becomes empty, **Then** focus moves to the
+    new-task input.
 
 ---
 
@@ -115,7 +149,8 @@ using only the keyboard at narrow and wide viewport sizes, confirming visible fo
 - A task keeps its completion state while its text is edited.
 - Canceling an edit after changing the field discards the unsaved changes.
 - An unavailable or unreadable saved task collection results in an empty usable list rather than a
-  broken interface; the user can still add new tasks.
+  broken interface; the user can still manage tasks for the current session and receives an accessible
+  warning that changes may not survive a refresh.
 - A long task description wraps within the available width without hiding task actions or creating
   unintended horizontal scrolling.
 - Rapid repeated activation of a task action produces one consistent final state and does not create
@@ -126,10 +161,10 @@ using only the keyboard at narrow and wide viewport sizes, confirming visible fo
 ### Functional Requirements
 
 - **FR-001**: The product MUST allow a user to create a task by submitting text containing at least
-  one non-whitespace character.
+  one non-whitespace character and no more than 500 characters after trimming.
 - **FR-002**: The product MUST trim leading and trailing whitespace before saving task text.
 - **FR-003**: The product MUST reject empty or whitespace-only text during task creation and editing
-  without creating or overwriting a task.
+  and MUST reject text exceeding 500 characters without creating or overwriting a task.
 - **FR-004**: Rejected text MUST produce a visible validation message that is announced to assistive
   technology and associated with the relevant input.
 - **FR-005**: The product MUST display every saved task with its text and current active or completed
@@ -140,20 +175,29 @@ using only the keyboard at narrow and wide viewport sizes, confirming visible fo
 - **FR-008**: The product MUST allow a user to edit a task's text while preserving that task's
   completion state.
 - **FR-009**: The product MUST allow a user to cancel an edit without changing the saved task.
+- **FR-009A**: While editing, pressing Enter MUST save valid task text and pressing Escape MUST cancel
+  the edit; visible Save and Cancel controls MUST remain available.
 - **FR-010**: The product MUST allow a user to permanently delete an individual task.
 - **FR-011**: Creation, text edits, completion changes, and deletions MUST remain in effect after a
   page refresh or later visit from the same browser and device.
 - **FR-012**: If saved task data cannot be read as a valid task collection, the product MUST remain
-  usable, present an empty list, and allow new tasks to be created.
+  usable, present an empty list, and allow tasks to be managed for the current session.
 - **FR-013**: Every action MUST affect only the selected task, except creation which adds one task.
 - **FR-014**: All task-management actions MUST be operable using only a keyboard.
 - **FR-015**: Every interactive control MUST have a clear accessible name; task-specific controls MUST
   distinguish the task they affect when context would otherwise be ambiguous.
 - **FR-016**: Keyboard focus MUST be visible and move through controls in a logical order.
+- **FR-016A**: After adding a task, focus MUST return to the new-task input. After saving or canceling
+  an edit, focus MUST move to that task's Edit control. After deleting a task, focus MUST move to the
+  next task's first control, otherwise the previous task's first control, or the new-task input when
+  no tasks remain.
 - **FR-017**: The interface MUST keep content readable and controls visible and operable at
   representative mobile and desktop viewport widths without unintended horizontal scrolling.
 - **FR-018**: The product MUST allow multiple tasks to have identical text while maintaining them as
   independently editable, completable, and deletable tasks.
+- **FR-019**: If persistence is unavailable or a save fails, the product MUST preserve task changes
+  for the current session and MUST display a visible warning announced to assistive technology that
+  the changes may not survive a refresh.
 
 ### Key Entities
 
@@ -173,13 +217,17 @@ using only the keyboard at narrow and wide viewport sizes, confirming visible fo
 - **SC-003**: In 100% of acceptance tests, valid task changes remain accurate after a page refresh,
   including task text, completion state, additions, and deletions.
 - **SC-004**: In 100% of validation tests, empty or whitespace-only submissions create no task or
-  overwrite and produce feedback perceivable both visually and by assistive technology.
+  overwrite; the same is true for submissions exceeding 500 characters. Every rejection produces
+  feedback perceivable both visually and by assistive technology.
 - **SC-005**: Every task-management action can be completed without a pointing device, with visible
   focus throughout the workflow.
 - **SC-006**: At representative viewport widths from 320 through 1440 CSS pixels, all content remains
   readable and all controls remain usable without unintended horizontal scrolling.
 - **SC-007**: A collection of at least 100 tasks remains fully viewable and supports creation,
   completion changes, editing, and deletion without user-visible delays longer than one second.
+- **SC-008**: In 100% of simulated persistence failures, task management remains usable for the
+  current session and the user receives a visible, assistive-technology-readable warning before a
+  refresh can discard changes.
 
 ## Assumptions
 
